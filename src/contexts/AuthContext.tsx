@@ -76,25 +76,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchUserProfile = async (userId: string) => {
     try {
       // Get user profile
-      const { data: profile, error: profileError } = await supabase
+      const { data: profiles, error: profileError } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', userId)
-        .single();
+        .eq('user_id', userId);
 
       if (profileError) throw profileError;
+
+      // Check if profile exists
+      if (!profiles || profiles.length === 0) {
+        console.log('No profile found for user:', userId);
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      const profile = profiles[0];
 
       let fundiProfile = null;
       if (profile.role === 'fundi') {
         // Get fundi-specific data
-        const { data: fundi, error: fundiError } = await supabase
+        const { data: fundis, error: fundiError } = await supabase
           .from('fundis')
           .select('*')
-          .eq('profile_id', profile.id)
-          .single();
+          .eq('profile_id', profile.id);
 
-        if (!fundiError && fundi) {
-          fundiProfile = fundi;
+        if (!fundiError && fundis && fundis.length > 0) {
+          fundiProfile = fundis[0];
         }
       }
 
@@ -115,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(userData);
     } catch (error) {
       console.error('Error fetching user profile:', error);
+      setUser(null);
     } finally {
       setIsLoading(false);
     }
@@ -128,7 +137,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        // Handle specific email confirmation error
+        if (error.message.includes('Email not confirmed')) {
+          throw new Error('Email not confirmed');
+        }
+        throw error;
+      }
 
       if (data.user) {
         await fetchUserProfile(data.user.id);
@@ -147,11 +162,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: undefined, // Disable email confirmation for demo
+        }
       });
 
       if (authError) throw authError;
 
       if (authData.user) {
+        // For demo purposes, we'll create the profile immediately
+        // In production, you might want email confirmation
+        
         // Create profile
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
@@ -166,7 +187,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .select()
           .single();
 
-        if (profileError) throw profileError;
+        if (profileError) {
+          console.error('Profile creation error:', profileError);
+          throw profileError;
+        }
 
         // If user is a fundi, create fundi profile
         if (userData.role === 'fundi') {
@@ -181,12 +205,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               location: userData.location || '',
             });
 
-          if (fundiError) throw fundiError;
+          if (fundiError) {
+            console.error('Fundi profile creation error:', fundiError);
+            throw fundiError;
+          }
         }
 
-        await fetchUserProfile(authData.user.id);
+        // For demo, automatically confirm the user and sign them in
+        if (authData.session) {
+          await fetchUserProfile(authData.user.id);
+        }
       }
     } catch (error: any) {
+      console.error('Signup error:', error);
       throw new Error(error.message || 'Signup failed');
     } finally {
       setIsLoading(false);

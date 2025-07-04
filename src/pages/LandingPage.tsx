@@ -112,9 +112,7 @@ const LandingPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href="https://wa.me/254714930919?text=Hello%20MtaaniFix%2C%20I%20would%20like%20assistance%20with%20booking%20a%20fundi%20for%20a%20service.%20Please%20let%20me%20know%20the%20next%20steps..."
-                  alt="Book via WhatsApp" 
-                  target="_blank" rel="noopener noreferrer"
+                  href="https://wa.me/254700000000?text=Hi%20MtaaniFix,%20I%20need%20help%20booking%20a%20fundi"
                   className="inline-flex items-center justify-center bg-green-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors"
                 >
                   <Phone className="w-5 h-5 mr-2" />
@@ -236,7 +234,7 @@ const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="https://wa.me/25471493019?text=Hi%20MtaaniFix,%20I%20need%20help%20booking%20a%20fundi"
+              href="https://wa.me/254700000000?text=Hi%20MtaaniFix,%20I%20need%20help%20booking%20a%20fundi"
               className="inline-flex items-center justify-center bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               <Phone className="w-5 h-5 mr-2" />
