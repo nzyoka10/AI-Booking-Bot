@@ -24,41 +24,91 @@ const WhatsAppBot = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const fundis = [
-    {
-      id: 1,
-      name: 'John Mwangi',
-      service: 'Plumbing',
-      rating: 4.9,
-      location: 'Westlands',
-      distance: '2.1 km',
-      availability: 'Available now',
-      price: 'KSh 1,500/hour',
-      image: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1'
-    },
-    {
-      id: 2,
-      name: 'Grace Wanjiku',
-      service: 'Plumbing',
-      rating: 4.8,
-      location: 'Kilimani',
-      distance: '3.5 km',
-      availability: 'Available in 30 mins',
-      price: 'KSh 1,200/hour',
-      image: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1'
-    },
-    {
-      id: 3,
-      name: 'David Kamau',
-      service: 'Plumbing',
-      rating: 4.7,
-      location: 'Parklands',
-      distance: '4.2 km',
-      availability: 'Available in 1 hour',
-      price: 'KSh 1,800/hour',
-      image: 'https://images.pexels.com/photos/1484794/pexels-photo-1484794.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1'
-    }
-  ];
+  const fundis = {
+    plumbing: [
+      {
+        id: 1,
+        name: 'John Mwangi',
+        service: 'Plumbing',
+        rating: 4.9,
+        location: 'Westlands',
+        distance: '2.1 km',
+        availability: 'Available now',
+        price: 'KSh 1,500/hour',
+        image: 'https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg'
+      },
+      {
+        id: 2,
+        name: 'Grace Wanjiku',
+        service: 'Plumbing',
+        rating: 4.8,
+        location: 'Kilimani',
+        distance: '3.5 km',
+        availability: 'Available in 30 mins',
+        price: 'KSh 1,200/hour',
+        image: 'https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg'
+      },
+      {
+        id: 3,
+        name: 'David Kamau',
+        service: 'Plumbing',
+        rating: 4.7,
+        location: 'Parklands',
+        distance: '4.2 km',
+        availability: 'Available in 1 hour',
+        price: 'KSh 1,800/hour',
+        image: 'https://images.pexels.com/photos/1484794/pexels-photo-1484794.jpeg'
+      }
+    ],
+    electrical: [
+      {
+        id: 4,
+        name: 'Lucy Nduta',
+        service: 'Electrical',
+        rating: 4.8,
+        location: 'CBD',
+        distance: '2.0 km',
+        availability: 'Available now',
+        price: 'KSh 1,600/hour',
+        image: 'https://images.pexels.com/photos/103573/pexels-photo-103573.jpeg'
+      },
+      {
+        id: 5,
+        name: 'James Otieno',
+        service: 'Electrical',
+        rating: 4.7,
+        location: 'Ngong Road',
+        distance: '3.2 km',
+        availability: 'Available in 1 hour',
+        price: 'KSh 1,750/hour',
+        image: 'https://images.pexels.com/photos/2965260/pexels-photo-2965260.jpeg'
+      }
+    ],
+    mechanic: [
+      {
+        id: 6,
+        name: 'Moses Kariuki',
+        service: 'Mechanic',
+        rating: 4.6,
+        location: 'Langata',
+        distance: '6.2 km',
+        availability: 'Available tomorrow',
+        price: 'KSh 2,500/hour',
+        image: 'https://images.pexels.com/photos/380731/pexels-photo-380731.jpeg'
+      },
+      {
+        id: 7,
+        name: 'Ann Achieng',
+        service: 'Mechanic',
+        rating: 4.5,
+        location: 'Embakasi',
+        distance: '5.0 km',
+        availability: 'Available today afternoon',
+        price: 'KSh 2,000/hour',
+        image: 'https://images.pexels.com/photos/8972668/pexels-photo-8972668.jpeg'
+      }
+    ]
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -80,22 +130,39 @@ const WhatsAppBot = () => {
 
   const processMessage = async (message: string) => {
     const lowerMessage = message.toLowerCase();
-    
     await simulateTyping();
 
     if (lowerMessage.includes('plumb') || lowerMessage.includes('water') || lowerMessage.includes('pipe')) {
-      // Show fundi list
       const botResponse: Message = {
         id: Date.now().toString(),
-        text: '🔧 Great! I found 3 verified plumbers near you in Westlands. Here are your options:',
+        text: '🔧 Great! I found verified plumbers near you:',
         sender: 'bot',
         timestamp: new Date(),
         type: 'fundi-list',
-        data: { fundis: fundis }
+        data: { fundis: fundis.plumbing }
+      };
+      setMessages(prev => [...prev, botResponse]);
+    } else if (lowerMessage.includes('electric') || lowerMessage.includes('power') || lowerMessage.includes('wiring')) {
+      const botResponse: Message = {
+        id: Date.now().toString(),
+        text: '⚡ Great! Here are available electricians near you:',
+        sender: 'bot',
+        timestamp: new Date(),
+        type: 'fundi-list',
+        data: { fundis: fundis.electrical }
+      };
+      setMessages(prev => [...prev, botResponse]);
+    } else if (lowerMessage.includes('mechanic') || lowerMessage.includes('car') || lowerMessage.includes('vehicle')) {
+      const botResponse: Message = {
+        id: Date.now().toString(),
+        text: '🚗 Great! Here are nearby mechanics you can book:',
+        sender: 'bot',
+        timestamp: new Date(),
+        type: 'fundi-list',
+        data: { fundis: fundis.mechanic }
       };
       setMessages(prev => [...prev, botResponse]);
     } else if (lowerMessage.includes('book') && lowerMessage.includes('john')) {
-      // Booking confirmation
       const botResponse: Message = {
         id: Date.now().toString(),
         text: '✅ Perfect! I\'m booking John Mwangi for you.',
@@ -103,26 +170,10 @@ const WhatsAppBot = () => {
         timestamp: new Date(),
         type: 'booking',
         data: {
-          fundi: fundis[0],
+          fundi: fundis.plumbing[0],
           bookingId: 'BK001234',
           estimatedArrival: '15-30 minutes'
         }
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('electric') || lowerMessage.includes('power') || lowerMessage.includes('wiring')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '⚡ I can help you find qualified electricians! Can you tell me more about your electrical issue? Is it an emergency or planned work?',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('mechanic') || lowerMessage.includes('car') || lowerMessage.includes('vehicle')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '🚗 I can connect you with trusted mechanics! What type of vehicle issue are you experiencing? Please share your location too.',
-        sender: 'bot',
-        timestamp: new Date(),
       };
       setMessages(prev => [...prev, botResponse]);
     } else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
@@ -134,7 +185,6 @@ const WhatsAppBot = () => {
       };
       setMessages(prev => [...prev, botResponse]);
     } else {
-      // Default response
       const botResponse: Message = {
         id: Date.now().toString(),
         text: 'I can help you with:\n\n🔧 Plumbing services\n⚡ Electrical work\n🚗 Mechanics\n💻 ICT support\n\nWhat service do you need? You can also share your location for better matching!',
@@ -144,6 +194,14 @@ const WhatsAppBot = () => {
       setMessages(prev => [...prev, botResponse]);
     }
   };
+
+
+
+
+
+
+
+
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
