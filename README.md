@@ -23,15 +23,10 @@ This project uses **Supabase** as the backend to handle real-time data storage, 
 
 1. User types a request like:  
    `"I need a plumber in Kilimani"`
-
 2. Bot searches Supabase database for verified fundis.
 
 3. Bot responds with:
-
     `"Found verified plumbers nearby! - (As a list). Shall I book?"`
-
-4. On confirmation, booking data is stored in Supabase and confirmation is displayed.
-
 
 4. On confirmation, booking data is stored in Supabase and confirmation is displayed.
 
@@ -84,9 +79,9 @@ This project uses **Supabase** as the backend to handle real-time data storage, 
 
 ## Future Enhancements
 <!-- - Mobile App -->
-- ✅ Integrate real WhatsApp API
+- ✅ Integrate WhatsApp API
 - 💳 Add mobile payment system (M-Pesa)
-- 📊 Admin dashboard for fundis
+- 📊 Admin dashboard for fundis and customers
 - 🔔 Push/SMS notifications for booking updates
 - 🧾 Receipt and billing automation
 
