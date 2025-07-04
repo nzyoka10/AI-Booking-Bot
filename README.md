@@ -1,11 +1,15 @@
 # 🛠️ MtaaniFix — AI-Powered WhatsApp Bot for Booking Skilled Workers
 
+![Landing Page](./images/Landing-page.png)
+
 ## Overview
 
 **MtaaniFix -** is an AI-powered WhatsApp assistant that connects users with verified sikked workers known as *`fundis`* across Kenya. 
 - Whether it's a plumbing emergency, electrical issue, vehicle trouble, or tech support need, MtaaniFix helps you book trusted experts directly through a chat interface.
 
 This project uses **Supabase** as the backend to handle real-time data storage, user management, and authentication.
+
+<!-- >[![Netlify Status](https://api.netlify.com/api/v1/badges/4d3edcbc-xxxx-xxxx-xxxx-abcdef123456/deploy-status)](https://app.netlify.com/sites/mtaanifix/deploys) -->
 
 
 ## 🚀 Features
