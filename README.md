@@ -1,88 +1,96 @@
-<!-- File: README.md -->
-# Project: [Project Name]
+# 🛠️ MtaaniFix — AI-Powered WhatsApp Bot for Booking Skilled Workers
+
 ## Overview
-<!-- This project is a [brief description of the project].
- write the description
- -->
 
- 
+**MtaaniFix -** is an AI-powered WhatsApp assistant that connects users with verified sikked professionals known as *`fundis`* across Kenya. 
+- Whether it's a plumbing emergency, electrical issue, vehicle trouble, or tech support need, MtaaniFix helps you book trusted experts directly through a chat interface.
+
+This project uses **Supabase** as the backend to handle real-time data storage, user management, and authentication.
 
 
+## 🚀 Features
 
-<!-- 
-
-This project is a [briefly describe the project].
-
-Book Skilled Workers Via WhatsApp
-AI-powered platform connecting you with verified professionals across Kenya. From plumbers to electricians, get the job done right, fast.
-
-WhatsApp Bot
-AI-Powered Assistant
-
-"I need a plumber in Westlands"
-
-🔧 Found 3 verified plumbers nearby! John (4.9⭐) is available now. Shall I book?
-
-Professional Services Available
-From emergency repairs to planned installations, our verified professionals are ready to help with quality workmanship guaranteed.
-
-Plumbing
-Professional plumbers for all your water and drainage needs
-
-Book Now →
-Electrical
-Licensed electricians for installations and repairs
-
-Book Now →
-Mechanics
-Expert mechanics for vehicle repairs and maintenance
-
-Book Now →
-ICT Services
-Tech support, installations, and IT solutions
-
-Book Now →
-Why Choose MtaaniFix?
-We're revolutionizing how Kenyans find and book skilled workers with AI-powered matching and seamless WhatsApp integration.
-
-Verified Professionals
-All fundi's are vetted and background-checked
-
-24/7 Availability
-Book services anytime via WhatsApp
-
-Location-Based Matching
-AI matches you with nearby professionals
-
-Quality Guaranteed
-Rated professionals with quality assurance
-
-Ready to Get Started?
-Join thousands of satisfied customers who trust MtaaniFix for their home and business needs.
+- 🤖 **AI Chatbot Experience** – Simulates WhatsApp-style conversation with natural responses.
+- 📍 **Location-Based Matching** – Smart fundi suggestions based on area and service type.
+- ✅ **Verified Professionals** – All service providers are pre-vetted and rated.
+- ⚡ **One-Click Booking** – Seamless booking directly in chat.
+- 🧠 **Supabase Integration** – Real-time database for managing fundi data, bookings, and users.
+<!-- - 📱 **Mobile-Friendly UI** – Built using React + Tailwind CSS for responsive design. -->
 
 
 
- -->
+## 🧠 How It Works
 
-## Features 
+1. User types a request like:  
+   `"I need a plumber in Kilimani"`
 
-<!-- 
-    - [Feature 1]: [briefly describe feature 1]
-    - [Feature 2]: [briefly describe feature 2]
-    - [Feature 3]: [briefly describe feature 3] 
--->
+2. Bot searches Supabase database for verified fundis.
 
-## Screenshot page image, with heading and brief description
-- Landing page <br><br>
-![MtaaniFix - Landing page](./images/Landing-page.png)
+3. Bot responds with:
 
-<!-- Login -->
-- Login page <br><br>
-![MtaaniFix - Landing page](./images/Signin-page.png)
+    `"Found verified plumbers nearby! - (As a list). Shall I book?"`
 
-<!-- Register -->
-- Register page <br><br>
-![MtaaniFix - Landing page](./images/Signup-page.png)
+4. On confirmation, booking data is stored in Supabase and confirmation is displayed.
 
 
+4. On confirmation, booking data is stored in Supabase and confirmation is displayed.
 
+### Live link
+> Live link:   [Mtaani-Fix](https://mtaani-fix.netlify.app/)
+<br>
+
+## 🖼️ Screenshots
+
+> These images represent the user interface of MtaaniFix.
+
+### Landing Page
+![Landing Page](./images/Landing-page.png)
+
+### 🤖 WhatApp Bot
+![WhatsApp Bot](./images/WhatsApp-bot.png)
+
+### 🔐 Login Page
+![Login Page](./images/Signin-page.png)
+
+### 🔐 Register Page
+![Register Page](./images/Signup-page.png)
+
+---
+
+## Tech Stack
+
+| Technology     | Description                                    |
+|----------------|------------------------------------------------|
+| **React.js**   | Frontend library for building UI               |
+| **Tailwind CSS** | Utility-first CSS framework                   |
+| **TypeScript** | Typed superset of JavaScript for robustness   |
+| **Supabase**   | Backend-as-a-Service (PostgreSQL, Auth, Realtime DB) |
+| **Lucide React** | Icon library                                 |
+| **React Router** | Client-side routing                          |
+
+---
+
+## Supabase Setup
+
+> Make sure you’ve already created a Supabase project on https://supabase.com/
+
+1. **Create a new project** in Supabase
+2. Create tables:
+- `fundis`: for storing service provider info
+- `bookings`: for tracking user bookings
+- `users`: for storing registered user info
+3. Enable **Row Level Security (RLS)** and set policies
+4. Connect to your Supabase project using environment variables
+
+## Future Enhancements
+<!-- - Mobile App -->
+- ✅ Integrate real WhatsApp API
+- 💳 Add mobile payment system (M-Pesa)
+- 📊 Admin dashboard for fundis
+- 🔔 Push/SMS notifications for booking updates
+- 🧾 Receipt and billing automation
+
+## 📞 Contact
+- Author: Eric Nzyoka
+- Email: nzyoka90@gmail.com
+- GitHub: @nzyoka10
