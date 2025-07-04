@@ -14,7 +14,7 @@ This project uses **Supabase** as the backend to handle real-time data storage, 
 - 📍 **Location-Based Matching** – Smart fundi suggestions based on area and service type.
 - ✅ **Verified Professionals** – All service providers are pre-vetted and rated.
 - ⚡ **One-Click Booking** – Seamless booking directly in chat.
-- 🧠 **Supabase Integration** – Real-time database for managing fundi data, bookings, and users.
+- 🧠 **Supabase Integration** – Real-time database for managing fundi data, bookings and users.
 <!-- - 📱 **Mobile-Friendly UI** – Built using React + Tailwind CSS for responsive design. -->
 
 
