@@ -71,9 +71,9 @@ This project uses **Supabase** as the backend to handle real-time data storage, 
 
 1. **Create a new project** in Supabase
 2. Create tables:
-- `fundis`: for storing service provider info
-- `bookings`: for tracking user bookings
-- `users`: for storing registered user info
+    - `fundis`: for storing service provider info
+    - `bookings`: for tracking user bookings
+    - `users`: for storing registered user info
 3. Enable **Row Level Security (RLS)** and set policies
 4. Connect to your Supabase project using environment variables
 
