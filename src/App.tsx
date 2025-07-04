@@ -58,14 +58,21 @@ function App() {
             <Route path="/dashboard" element={<DashboardRouter />} />
             
             {/* Protected Role-Based Routes */}
-            <Route 
+            {/* <Route 
               path="/admin" 
               element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboard />
                 </ProtectedRoute>
               } 
-            />
+            /> */}
+
+            <Route path="/admin" element={<AdminDashboard />} />
+            {/* <Route path="/fundi" element={<FundiDashboard />} /> */}
+            <Route path="/customer" element={<CustomerDashboard />} />
+
+
+
             <Route 
               path="/fundi" 
               element={
@@ -74,14 +81,14 @@ function App() {
                 </ProtectedRoute>
               } 
             />
-            <Route 
+            {/* <Route 
               path="/customer" 
               element={
                 <ProtectedRoute allowedRoles={['customer']}>
                   <CustomerDashboard />
                 </ProtectedRoute>
               } 
-            />
+            /> */}
             
             {/* Catch all route */}
             <Route path="*" element={<Navigate to="/" replace />} />

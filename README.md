@@ -2,7 +2,7 @@
 
 ## Overview
 
-**MtaaniFix -** is an AI-powered WhatsApp assistant that connects users with verified sikked professionals known as *`fundis`* across Kenya. 
+**MtaaniFix -** is an AI-powered WhatsApp assistant that connects users with verified sikked workers known as *`fundis`* across Kenya. 
 - Whether it's a plumbing emergency, electrical issue, vehicle trouble, or tech support need, MtaaniFix helps you book trusted experts directly through a chat interface.
 
 This project uses **Supabase** as the backend to handle real-time data storage, user management, and authentication.
@@ -49,6 +49,18 @@ This project uses **Supabase** as the backend to handle real-time data storage, 
 
 ### 🔐 Register Page
 ![Register Page](./images/Signup-page.png)
+
+### Admin dashboard
+![Admin dashboard](./images/Admin-dashboard.png)
+
+### Admin dashboard - Fundis
+![Admin dashb-fundi](./images/Admin-fundis.png)
+
+### Admin dashboard - Bot 
+![Admin dashboard](./images/Admin-Bot.png)
+
+### Admin dashboard - Eaarnings
+![Admin dashboard](./images/Admin-earnings.png)
 
 ---
 

@@ -148,8 +148,11 @@ const AdminDashboard = () => {
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">{user?.name}</p>
-                <p className="text-sm text-gray-500">{user?.role}</p>
+                {/* <p className="font-medium text-gray-900">{user?.name}</p> */}
+                <p className="font-medium text-gray-900">Admin User</p>
+
+                {/* <p className="text-sm text-gray-500">{user?.role}</p> */}
+                <p className="text-sm text-gray-500">Admin</p>
               </div>
             </div>
             <button
@@ -172,7 +175,9 @@ const AdminDashboard = () => {
               <h1 className="text-2xl font-bold text-gray-900">
                 {sidebarItems.find(item => item.id === activeTab)?.label}
               </h1>
-              <p className="text-gray-600">Welcome back, {user?.name}</p>
+
+              {/* <p className="text-gray-600">Welcome back, {user?.name}</p> */}
+              <p className="text-gray-600">Welcome back, Admin User</p>
             </div>
             <div className="flex items-center space-x-4">
               <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">

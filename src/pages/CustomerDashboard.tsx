@@ -513,7 +513,7 @@ const CustomerDashboard = () => {
                 View Website
               </Link>
               <a 
-                href="https://wa.me/254700000000?text=Hi%20MtaaniFix,%20I%20need%20help%20booking%20a%20fundi"
+                href="/whatsapp-bot"
                 className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />
