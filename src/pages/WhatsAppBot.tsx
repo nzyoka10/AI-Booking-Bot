@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Send, Phone, ArrowLeft, MapPin, Star, Clock, User, CheckCircle } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+import { Send, Phone, ArrowLeft, MapPin, Star, Clock, CheckCircle } from 'lucide-react';
+
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_ANON_KEY);
 
 interface Message {
   id: string;
@@ -12,14 +15,12 @@ interface Message {
 }
 
 const WhatsAppBot = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hello! 👋 Welcome to MtaaniFix! I\'m your AI assistant ready to help you find and book skilled workers. What service do you need today?',
-      sender: 'bot',
-      timestamp: new Date(),
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([{
+    id: '1',
+    text: 'Hello! 👋 Welcome to MtaaniFix — your trusted partner in finding verified fundis near you. What service can I assist you with today?',
+    sender: 'bot',
+    timestamp: new Date(),
+  }]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -110,126 +111,89 @@ const WhatsAppBot = () => {
     ]
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(scrollToBottom, [messages]);
 
-  const simulateTyping = () => {
-    setIsTyping(true);
-    return new Promise(resolve => {
-      setTimeout(() => {
-        setIsTyping(false);
-        resolve(true);
-      }, 1500);
-    });
+  const simulateTyping = () => new Promise(resolve => { setIsTyping(true); setTimeout(() => { setIsTyping(false); resolve(true); }, 1500); });
+
+  const saveBooking = async (fundi: any) => {
+    const { data, error } = await supabase.from('bookings').insert([{
+      fundi_name: fundi.name,
+      service: fundi.service,
+      location: fundi.location,
+      price: fundi.price,
+      created_at: new Date().toISOString(),
+    }]);
+    if (error) console.error('Supabase insert error:', error);
+    return data;
   };
 
   const processMessage = async (message: string) => {
     const lowerMessage = message.toLowerCase();
     await simulateTyping();
 
-    if (lowerMessage.includes('plumb') || lowerMessage.includes('water') || lowerMessage.includes('pipe')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '🔧 Great! I found verified plumbers near you:',
-        sender: 'bot',
-        timestamp: new Date(),
-        type: 'fundi-list',
-        data: { fundis: fundis.plumbing }
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('electric') || lowerMessage.includes('power') || lowerMessage.includes('wiring')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '⚡ Great! Here are available electricians near you:',
-        sender: 'bot',
-        timestamp: new Date(),
-        type: 'fundi-list',
-        data: { fundis: fundis.electrical }
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('mechanic') || lowerMessage.includes('car') || lowerMessage.includes('vehicle')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '🚗 Great! Here are nearby mechanics you can book:',
-        sender: 'bot',
-        timestamp: new Date(),
-        type: 'fundi-list',
-        data: { fundis: fundis.mechanic }
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('book') && lowerMessage.includes('john')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '✅ Perfect! I\'m booking John Mwangi for you.',
-        sender: 'bot',
-        timestamp: new Date(),
-        type: 'booking',
-        data: {
-          fundi: fundis.plumbing[0],
-          bookingId: 'BK001234',
-          estimatedArrival: '15-30 minutes'
-        }
-      };
-      setMessages(prev => [...prev, botResponse]);
-    } else if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: '💰 Our pricing is transparent:\n\n• Plumbing: KSh 1,200 - 2,000/hour\n• Electrical: KSh 1,500 - 2,500/hour\n• Mechanics: KSh 1,000 - 3,000/hour\n• ICT Support: KSh 800 - 1,500/hour\n\nFinal price depends on the complexity and fundi selected. No hidden fees!',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, botResponse]);
+    const responseTemplates = {
+      plumberIntro: `🔧 Absolutely! Here are some highly-rated plumbers near you who are ready to assist.`,
+      electricianIntro: `⚡ Excellent choice. Take a look at our top-rated electricians available around you.`,
+      mechanicIntro: `🚗 No worries! These mechanics come highly recommended and can fix your vehicle in no time.`,
+      bookingConfirm: (name: string) => `✅ Great decision! ${name} has been successfully booked for your service request.`,
+      priceInfo: ` 💰 Here’s a breakdown of our standard hourly rates:\n• Plumbing: KSh 1,200 - 2,000\n• Electrical: KSh 1,500 - 2,500\n• Mechanics: KSh 1,000 - 3,000\n• ICT Support: KSh 800 - 1,500\nNo hidden costs — guaranteed!`,
+      defaultInfo: `🛠️ I can assist with:\n• 🔧 Plumbing\n• ⚡ Electrical\n• 🚗 Mechanics\n• 💻 ICT Support\nLet me know what you need help with.`
+    };
+
+    if (lowerMessage.includes('plumb')) {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(), text: responseTemplates.plumberIntro, sender: 'bot', timestamp: new Date(), type: 'fundi-list', data: { fundis: fundis.plumbing }
+      }]);
+    } else if (lowerMessage.includes('electric')) {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(), text: responseTemplates.electricianIntro, sender: 'bot', timestamp: new Date(), type: 'fundi-list', data: { fundis: fundis.electrical }
+      }]);
+    } else if (lowerMessage.includes('mechanic')) {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(), text: responseTemplates.mechanicIntro, sender: 'bot', timestamp: new Date(), type: 'fundi-list', data: { fundis: fundis.mechanic }
+      }]);
+    } else if (lowerMessage.includes('book')) {
+      const allFundis = [...fundis.plumbing, ...fundis.electrical, ...fundis.mechanic];
+      const fundi = allFundis.find(f => lowerMessage.includes(f.name.toLowerCase().split(' ')[0]));
+      if (fundi) {
+        await saveBooking(fundi);
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: responseTemplates.bookingConfirm(fundi.name),
+          sender: 'bot',
+          timestamp: new Date(),
+          type: 'booking',
+          data: {
+            fundi,
+            bookingId: `BK${Math.floor(Math.random() * 1000000)}`,
+            estimatedArrival: '15-30 minutes'
+          }
+        }]);
+      }
+    } else if (lowerMessage.includes('price')) {
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(), text: responseTemplates.priceInfo, sender: 'bot', timestamp: new Date()
+      }]);
     } else {
-      const botResponse: Message = {
-        id: Date.now().toString(),
-        text: 'I can help you with:\n\n🔧 Plumbing services\n⚡ Electrical work\n🚗 Mechanics\n💻 ICT support\n\nWhat service do you need? You can also share your location for better matching!',
-        sender: 'bot',
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, botResponse]);
+      setMessages(prev => [...prev, {
+        id: Date.now().toString(), text: responseTemplates.defaultInfo, sender: 'bot', timestamp: new Date()
+      }]);
     }
   };
 
-
-
-
-
-
-
-
-
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
-
-    // Add user message
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: inputMessage,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-    
+    const userMessage: Message = { id: Date.now().toString(), text: inputMessage, sender: 'user', timestamp: new Date() };
     setMessages(prev => [...prev, userMessage]);
     const currentMessage = inputMessage;
     setInputMessage('');
-
-    // Process and respond
     await processMessage(currentMessage);
   };
 
   const handleBookFundi = async (fundi: any) => {
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: `Book ${fundi.name}`,
-      sender: 'user',
-      timestamp: new Date(),
-    };
-    
+    const userMessage: Message = { id: Date.now().toString(), text: `Book ${fundi.name}`, sender: 'user', timestamp: new Date() };
     setMessages(prev => [...prev, userMessage]);
     await processMessage(`book ${fundi.name}`);
   };
